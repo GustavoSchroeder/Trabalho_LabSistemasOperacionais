@@ -16,24 +16,30 @@ function verificaCaminho(){ #Verifica se caminho onde estão os programas existe
 	   echo "Diretorio '$MON_DIR' não existe" > ./$PROGRAMAC
    	exit 2
 	fi
-	
-##if "$TESTCASES_DIR_DIR" | egrep '\' > /dev/null
-##	then
-##		echo "Path correto"
-##	else
-##		$var=$TESTCASES_DIR
-##		$TESTCASES_DIR = ".\$var"
+
+function compilaArquivo(){
+inicio="problema_"
+contNumFin=00
+contMais=1
+contPastas=ls ./ | wc -l;
+	while($contPasta -lt "0"); do
+	if(! -e "$PROGRAMAC" "$inicio" "$contNumFin" ".c")
+	echo "Arquivo não existe"
+	$contNumFin=$contNumFin+$contMais
+	else
+	gcc "problema_$contNumFin".c -o "$inicio" "$contNumFin"
+	chmod x+u "$inicio" "$contNumFin" ".o"
+	$contNumFin=$contNumFin+$contMais
+	fi
 }
 
-function trataArquivo(){
-contador=00; 
+function testaarquivo(){
+contador=00
 contPasta=ls ./ | wc -l;
 
-while($($contPasta /2) -lt "0")
+while($($contPasta /2) -lt "0");
 	do
-	#codigo	
-	#codigo
-
+	
 
 
 
