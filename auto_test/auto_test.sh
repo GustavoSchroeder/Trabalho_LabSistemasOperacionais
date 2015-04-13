@@ -18,7 +18,7 @@ function verificaCaminho(){ #Verifica se caminho onde estão os programas existe
 	fi
 }
 
-function compilaArquivo(){
+function compilaTestaArquivo(){
 inicio="problema_"
 contNumFin=00
 contMais=1
@@ -34,16 +34,12 @@ contPastas=ls ./ | wc -l;
 	fi
 }
 
-function testaarquivo(){
-contador=00
-contPasta=ls ./ | wc -l;
+##function testaarquivo(){ //Função descontinuada, irá ser feito em CompilaeTestaArquivo.
+##contador=00
+##contPasta=ls ./ | wc -l;
 
-while($($contPasta /2) -lt "0");
-	do
-	
-
-
-
-contador=$($contador+1)
+##while($($contPasta /2) -lt "0");
+##	do
+##contador=$($contador+1)
 }
 
