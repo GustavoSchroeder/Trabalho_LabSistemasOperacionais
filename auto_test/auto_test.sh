@@ -16,6 +16,7 @@ function verificaCaminho(){ #Verifica se caminho onde estão os programas existe
 	   echo "Diretorio '$MON_DIR' não existe" > ./$PROGRAMAC
    	exit 2
 	fi
+}
 
 function compilaArquivo(){
 inicio="problema_"
