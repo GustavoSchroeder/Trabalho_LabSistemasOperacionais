@@ -4,6 +4,7 @@
 
 TESTCASES_DIR="$*" #o caminho para um diretório onde estão os casos de teste
 PROGRAMAC="$*" #o camingo para o programa C
+RESPINCORRETAS=0;
 
 function verificarSintaxe(){ #verifica se a variavel foi inicializada
 	if test -z "$TESTCASES_DIR"; then
@@ -20,6 +21,7 @@ function verificaCaminho(){ #Verifica se caminho onde estão os programas existe
 
 function compilaTestaArquivo(){
 inicio="problema_"
+solucao="_INPUT"
 contNumFin=00
 contMais=1
 contPastas=ls ./ | wc -l;
@@ -28,9 +30,11 @@ contPastas=ls ./ | wc -l;
 	echo "Arquivo não existe"
 	$contNumFin=$contNumFin+$contMais
 	else
-	gcc "problema_$contNumFin".c -o "$inicio" "$contNumFin"
+	gcc problema_"$contNumFin".c -o "$inicio" "$contNumFin"
 	chmod x+u "$inicio" "$contNumFin" ".o"
 	$contNumFin=$contNumFin+$contMais
+	./$inicio$contNumFin.o < ./$contpasta$solucao
+	##falta captar a saida do programa c e testala com a solução.
 	fi
 }
 
