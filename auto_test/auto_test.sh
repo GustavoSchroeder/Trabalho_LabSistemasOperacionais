@@ -22,25 +22,31 @@ function verificaCaminho(){
 
 function compilaTestaArquivo(){
   inicio="problema_"
-  solucao="_INPUT"
+  entrada="_INPUT"
+  saida="_OUTPUT"
   contNumFin=00
   contMais=1
   contPastas=$(ls ./ | wc -l);
+  registroDeErros=" - Erros -  \n"
 
-	while test $contPasta -lt "0"; do
+	while test $contPasta -gt "0"; do
            if(! -e "$PROGRAMAC" "$inicio" "$contNumFin" ".c") #testa se arquivo existe
 	     echo "Arquivo não existe"
 	     $contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 	   else
-
-	   gcc problema_"$contNumFin".c -o "$inicio" "$contNumFin" #caso existir compila o programa
-	   ##testar se o gcc falhou, caso tenha falhado o programa C já está errado.
-
-	   $contNumFin=$((contNumFin+contMais)) #incrementa contador
-	  ./$inicio$contNumFin.o < ./$contpasta$solucao #executa o arquivo mudando a entrada padrão
-	
-	## utiliza uma variável para pegara saída 
-	##falta captar a saida do programa c e testala com a solução.
-	
+	   #caso existir compila o programa
+		 if gcc problema_"$contNumFin".c -o "$inicio" "$contNumFin" then 
+	   		##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
+	   		$registroDeErros="Código contém erro: Programa número $contNumFin (Erro de compilação) \n"
+		 	$contNumFin=$((contNumFin-contMais))
+		   else
+			 $contNumFin=$((contNumFin-contMais)) #incrementa contador
+	           	solucao=./$inicio$contNumFin.o < ./$contpasta$entrada #executa o arquivo mudando a entrada padrão
+	 
+		 	if "$TESTCASES_DIR$contNumFim$saida" -ne "$solucao" then
+				$registroDeErros="Código contém erro: Programa número $contNumFin (Erro na saída) \n"
+				$contNumFin=$((contNumFin-contMais))
+			fi
+		fi
 	fi
 }
