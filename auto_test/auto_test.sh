@@ -35,13 +35,15 @@ function compilaTestaArquivo(){
 	     $contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 	   else
 	   #caso existir compila o programa
-		 if gcc problema_"$contNumFin".c -o "$inicio" "$contNumFin" then 
+		 caminho="$inicio" "$contNumFin" ".c" 
+		 caminho01="$inicio" "$contNumFin"
+		 if gcc "$caminho" -o "$caminho1"  then 
 	   		##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
 	   		$registroDeErros="Código contém erro: Programa número $contNumFin (Erro de compilação) \n"
 		 	$contNumFin=$((contNumFin-contMais))
 		   else
 			 $contNumFin=$((contNumFin-contMais)) #incrementa contador
-	           	solucao=./$inicio$contNumFin.o < ./$contpasta$entrada #executa o arquivo mudando a entrada padrão
+	           	solucao=./$caminho01.o < ./$contpasta$entrada #executa o arquivo mudando a entrada padrão
 	 
 		 	if "$TESTCASES_DIR$contNumFim$saida" -ne "$solucao" then
 				$registroDeErros="Código contém erro: Programa número $contNumFin (Erro na saída) \n"
