@@ -7,16 +7,17 @@ RESPINCORRETAS=0;
 
 #verifica se a variavel foi inicializada
 function verificarSintaxe(){ 
-	if test -z "$TESTCASES_DIR"; then
-		echo "Você não definiu um caminho válido para a procura"	
-		exit 1
+	if ! [ $TESTCASES_DIR ] then
+    	  TESTCASES_DIR='.'
+    	  echo "Você não definiu um caminho válido para a procura"
+	fi
 }
 
 #Verifica se caminho onde estão os programas existe, senao existe define um
 function verificaCaminho(){ 
-	if [ ! -d "PROGRAMAC" ]; then
-	   echo "Diretorio '$PROGRAMAC' não existe. O caminho foi direcionado para a pasta padrão" > ./$PROGRAMAC
-   	exit 2
+	if ! [ $PROGRAMAC ] then
+	  PROGRAMAC='.'
+	  echo "Diretorio '$PROGRAMAC' não existe. O caminho foi direcionado para a pasta padrão"
 	fi
 }
 
