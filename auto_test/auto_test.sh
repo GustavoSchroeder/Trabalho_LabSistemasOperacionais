@@ -1,9 +1,9 @@
 #!/bin/bash/
 #Gustavo Lazarotto Schroeder
 
-TESTCASES_DIR="$*" #o caminho para um diretório onde estão os casos de teste
-PROGRAMAC="$*" #o camingo para o programa C
-RESPINCORRETAS=0;
+TESTCASES_DIR="$1" #o caminho para um diretório onde estão os casos de teste
+PROGRAMAC="$2" #o camingo para o programa C
+RESPINCORRETAS="Repostas Incorretas ou Não entregues\n"
 
 #verifica se a variavel foi inicializada
 function verificarSintaxe(){ 
@@ -29,33 +29,32 @@ function compilaTestaArquivo(){
   contNumSoluc=00
   contMais=1
   contPastas=$(ls $PROGRAMAC | wc -l);
-  registroDeErros=" - Erros -  \n"
   extensaoc=".c"
   extensaoo=".o"
 
 	while test $contPasta -gt "0"; do
-		#Todos os caminhos feitos usando variáveis
+	   #Todos os caminhos feitos usando variáveis
 	   caminho=$inicio$contNumFin$extensaoc
 	   caminho01=$inicio$contNumFin
-	   caminho_saida=$TESTCASES_DIR$contNumSoluc$saida
-	   caminho_entrada=$TESTCASES_DIR$contNumSoluc$entrada
-	  if [ ! -e "$PROGRAMAC" "$inicio" "$contNumFin" ".c" ] then #testa se arquivo existe
-	     echo "Código $contNumFin não foi entregue."
+	   caminho_saida=$TESTCASES_DIR/*$contNumSoluc$saida
+	   caminho_entrada=$TESTCASES_DIR/*$contNumSoluc$entrada
+	  if [ ! -e "$PROGRAMAC/*" "$inicio" "$contNumFin" ".c" ] then #testa se arquivo existe
+	     $RESPINCORRETAS="Problema numero $contNumFin \n"
 	     $contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 	   else
 	   #caso existir compila o programa
-	   	conta_arquivos=$((ls $PROGRAMAC/*.$caminho01 | wc -l)/2)
+	   	conta_arquivos=$((ls $TESTCASES_DIR/*.$caminho01 | wc -l)/2)
 	   		while test $conta_arquivos -gt "0"; do
-		 if [ gcc "$caminho" -o "$caminho1" ] then 
-	   		##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
-	   		$registroDeErros="Código contém erro: Programa número $contNumFin (Erro de compilação) \n"
-		 	$contNumFin=$((contNumFin-contMais))
-		   else
+			     if [ gcc "$caminho" -o "$caminho1" ] then 
+	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
+	   			$RESPINCORRETAS="Problema numero $contNumFin \n"
+		 		$contNumFin=$((contNumFin-contMais))
+			 else
 		        	$contNumFin=$((contNumFin-contMais)) #incrementa contador
 	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) #executa o arquivo mudando a entrada padrão
-	 
+
 		 	if [ "$caminho_saida" -ne "$solucao" ] then  # Se resultado for diferente da solução está errado
-				$registroDeErros="Código contém erro: Programa número $contNumFin (Erro na saída) \n"
+				$RESPINCORRETAS="Problema numero $contNumFin \n"
 				$contNumFin=$((contNumFin-contMais))
 			fi
 			solucao=" " #zera a variável
