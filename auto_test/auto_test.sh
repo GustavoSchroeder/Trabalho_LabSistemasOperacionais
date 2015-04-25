@@ -48,7 +48,7 @@ function compilaTestaArquivo(){
 	   		  caminho_saida=$TESTCASES_DIR/*$contNumSoluc$saida
 	   		  caminho_entrada=$TESTCASES_DIR/*$contNumSoluc$entrada
 
-		         if [ gcc "$caminho" -o "$caminho1" -lt 0 ]; then 
+		         if [ gcc "$caminho" -o "$caminho1" -ne 0 ]; then 
 	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
 	   			RESPINCORRETAS="Problema numero $contNumFin erro de compilação\n"
 	   			NUMINCORRETAS=$((NUMINCORRETAS+contMais))
