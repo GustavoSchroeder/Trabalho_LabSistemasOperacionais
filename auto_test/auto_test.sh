@@ -42,28 +42,27 @@ function compilaTestaArquivo(){
 	   caminho01=$inicio$contNumFin
 	   caminho_saida=$TESTCASES_DIR/*$contNumSoluc$saida
 	   caminho_entrada=$TESTCASES_DIR/*$contNumSoluc$entrada
-	  if [ ! -e "$PROGRAMAC/*" "$inicio" "$contNumFin" ".c" ]; then #testa se arquivo existe
-	     RESPINCORRETAS="Problema numero $contNumFin \n"
+	  if [ ! -e "$PROGRAMAC/*" "$caminho" ]; then #testa se arquivo existe
+	     RESPINCORRETAS="Problema numero $contNumFin não existe \n"
 	     NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 	     contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 	   else
 	   #caso existir compila o programa
 	   	conta_arquivos=$((ls $TESTCASES_DIR/*.$caminho01 | wc -l)/2)
 	   		while test $conta_arquivos -gt "0"; do
-		         if [ gcc "$caminho" -o "$caminho1" ]; then 
+		         if [ (gcc "$caminho" -o "$caminho1") -lt 0 ]; then 
 	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
-	   			RESPINCORRETAS="Problema numero $contNumFin \n"
+	   			RESPINCORRETAS="Problema numero $contNumFin erro de compilação\n"
 	   			NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 		 		contNumFin=$((contNumFin-contMais))
 		         else
 		        	contNumFin=$((contNumFin-contMais)) #incrementa contador
-		        	NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) #executa o arquivo mudando a entrada padrão
-			fi
-
-		 	if [ "$caminho_saida" -ne "$solucao" ]; then  # Se resultado for diferente da solução está errado
-				$RESPINCORRETAS="Problema numero $contNumFin \n"
-				contNumFin=$((contNumFin-contMais))
+ 				 if [ "$caminho_saida" -ne "$solucao" ]; then  # Se resultado for diferente da solução está errado
+				   NUMINCORRETAS=$((NUMINCORRETAS+contMais))
+		                   RESPINCORRETAS="Problema numero $contNumFin erro na resposta \n"
+				   contNumFin=$((contNumFin-contMais))
+			         fi
 			fi
 			solucao=" " #zera a variável
 		    done
