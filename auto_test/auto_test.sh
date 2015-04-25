@@ -9,8 +9,8 @@ NUMINCORRETAS="0"
 #verifica se a variavel foi inicializada
 function verificarSintaxe(){
 	if ! [ $TESTCASES_DIR ]; then
-    	  TESTCASES_DIR='.'
     	  echo "Você não definiu um caminho válido para a procura"
+    	  exit 1
 	fi
 }
 #Verifica se caminho onde estão os programas existe, senao existe define um
@@ -18,8 +18,6 @@ function verificaCaminho(){
 	if ! [ $PROGRAMAC ]; then
 	  PROGRAMAC='.'
 	  echo "Diretorio '$PROGRAMAC' não existe. O caminho foi direcionado para a pasta padrão"
-	else 
-	 echo "OK"
 	fi
 }
 
@@ -40,31 +38,32 @@ function compilaTestaArquivo(){
 	   #Todos os caminhos feitos usando variáveis
 	   caminho=$inicio$contNumFin$extensaoc
 	   caminho01=$inicio$contNumFin
-	   caminho_saida=$TESTCASES_DIR/*$contNumSoluc$saida
-	   caminho_entrada=$TESTCASES_DIR/*$contNumSoluc$entrada
 	  if [ ! -e "$PROGRAMAC/*" "$caminho" ]; then #testa se arquivo existe
 	     RESPINCORRETAS="Problema numero $contNumFin não existe \n"
 	     NUMINCORRETAS=$((NUMINCORRETAS+contMais))
-	     contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 	   else
 	   #caso existir compila o programa
 	   	conta_arquivos=$((ls $TESTCASES_DIR/*.$caminho01 | wc -l)/2)
 	   		while test $conta_arquivos -gt "0"; do
+	   		  caminho_saida=$TESTCASES_DIR/*$contNumSoluc$saida
+	   		  caminho_entrada=$TESTCASES_DIR/*$contNumSoluc$entrada
 		         if [ (gcc "$caminho" -o "$caminho1") -lt 0 ]; then 
 	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
 	   			RESPINCORRETAS="Problema numero $contNumFin erro de compilação\n"
 	   			NUMINCORRETAS=$((NUMINCORRETAS+contMais))
-		 		contNumFin=$((contNumFin-contMais))
+		 		break
 		         else
-		        	contNumFin=$((contNumFin-contMais)) #incrementa contador
 	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) #executa o arquivo mudando a entrada padrão
  				 if [ "$caminho_saida" -ne "$solucao" ]; then  # Se resultado for diferente da solução está errado
 				   NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 		                   RESPINCORRETAS="Problema numero $contNumFin erro na resposta \n"
-				   contNumFin=$((contNumFin-contMais))
+				   else
+				   #caso esteja correta a contador para os teste é incrementado 
+                                     contNumSoluc=$((contNumSoluc+contMais))
 			         fi
 			fi
 			solucao=" " #zera a variável
+                        contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 		    done
 		fi
 	caminho=" "
