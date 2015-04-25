@@ -24,6 +24,7 @@ function verificaCaminho(){
 }
 
 function compilaTestaArquivo(){
+#Variáveis utilizadas
   inicio="problema_"
   entrada="_INPUT"
   saida="_OUTPUT"
@@ -33,6 +34,7 @@ function compilaTestaArquivo(){
   contPastas=$(ls $PROGRAMAC | wc -l);
   extensaoc=".c"
   extensaoo=".o"
+  solucao=" "
 
 	while test $contPasta -gt "0"; do
 	   #Todos os caminhos feitos usando variáveis
