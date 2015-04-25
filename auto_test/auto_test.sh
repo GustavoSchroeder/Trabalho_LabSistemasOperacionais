@@ -48,12 +48,12 @@ function compilaTestaArquivo(){
 	   #caso existir compila o programa
 	   	conta_arquivos=$((ls $TESTCASES_DIR/*.$caminho01 | wc -l)/2)
 	   		while test $conta_arquivos -gt "0"; do
-			     if [ gcc "$caminho" -o "$caminho1" ]; then 
+		         if [ gcc "$caminho" -o "$caminho1" ]; then 
 	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
 	   			RESPINCORRETAS="Problema numero $contNumFin \n"
 	   			NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 		 		contNumFin=$((contNumFin-contMais))
-			 else
+		         else
 		        	contNumFin=$((contNumFin-contMais)) #incrementa contador
 		        	NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) #executa o arquivo mudando a entrada padrão
