@@ -23,6 +23,7 @@ function verificaCaminho(){
 
 function compilaTestaArquivo(){
 #Variáveis utilizadas
+  var_string=" "
   inicio="problema_"
   entrada="_INPUT"
   saida="_OUTPUT"
@@ -39,7 +40,8 @@ function compilaTestaArquivo(){
 	   caminho=$inicio$contNumFin$extensaoc
 	   caminho01=$inicio$contNumFin
 	  if [ ! -e "$PROGRAMAC/*" "$caminho" ]; then #testa se arquivo existe
-	     RESPINCORRETAS="Problema numero $contNumFin não existe \n"
+	     var_string="Problema numero $contNumFin não existe \n"
+	     RESPINCORRETAS=$RESPINCORRETAS$var_string
 	     NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 	   else
 	   #caso existir compila o programa
@@ -50,22 +52,27 @@ function compilaTestaArquivo(){
 
 		         if [ gcc "$caminho" -o "$caminho1" -ne 0 ]; then 
 	   			##testa se o gcc falhou, caso tenha falhado o programa C já está errado.
-	   			RESPINCORRETAS="Problema numero $contNumFin erro de compilação\n"
+	   			var_string="Problema numero $contNumFin erro de compilação\n"
+	   			RESPINCORRETAS=$RESPINCORRETAS$var_string
 	   			NUMINCORRETAS=$((NUMINCORRETAS+contMais))
 		 		break
 		         else
-	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) #executa o arquivo mudando a entrada padrão
- 				 if [ "$caminho_saida" -ne "$solucao" ]; then  # Se resultado for diferente da solução está errado
+		         	#executa o arquivo mudando a entrada padrão
+	                	solucao=$caminho_saida < $($caminho_entrada$conta_arquivos) 
+	                	# Se resultado for diferente da solução está errado
+ 				 if [ "$caminho_saida" -ne "$solucao" ]; then  
 				   NUMINCORRETAS=$((NUMINCORRETAS+contMais))
-		                   RESPINCORRETAS="Problema numero $contNumFin erro na resposta \n"
+		                   var_string="Problema numero $contNumFin erro na resposta \n"
+		                   RESPINCORRETAS=$RESPINCORRETAS$var_string
 				   else
 				   #caso esteja correta a contador para os teste é incrementado 
                                      contNumSoluc=$((contNumSoluc+contMais))
 			         fi
-			fi
-			solucao=" " #zera a variável
-                        contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
+			   fi
 		    done
+		    solucao=" " #zera a variável
+		    var_string=" " #zera variável
+                    contNumFin=$((contNumFin-contMais)) #caso nao exista já passa esse
 		fi
 	caminho=" "
    	caminho01=" "
